@@ -26,7 +26,8 @@ namespace NewNavigationView
             ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(188, 188));
         }
 
-
+        private Type currentPage;
+        
         // List of ValueTuple holding the Navigation Tag and the relative Navigation Page 
         private readonly IList<(string Tag, Type Page)> _pages = new List<(string Tag, Type Page)>
         {
@@ -92,7 +93,11 @@ namespace NewNavigationView
         private void NavView_Navigate(string navItemTag)
         {
             var item = _pages.First(p => p.Tag.Equals(navItemTag));
+            if (currentPage == item.Page)
+                return;
             ContentFrame.Navigate(item.Page);
+
+            currentPage = item.Page;
         }
 
         private void NavView_BackRequested(MUXC.NavigationView sender, MUXC.NavigationViewBackRequestedEventArgs args)
